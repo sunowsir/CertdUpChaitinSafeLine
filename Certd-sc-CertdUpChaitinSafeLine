@@ -5,6 +5,7 @@ const certKey = ctx.self.cert.key;
 
 // 根据接口文档构造请求体
 const requestBody = {
+  // 修改ID为你要替换的证书的序号，比如要替换掉当前正在生效的1号证书，则这里填1，序号可通过GET方法获得
   "id":1,
   "type":2,
   "acme":{
