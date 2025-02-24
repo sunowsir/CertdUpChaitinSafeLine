@@ -5,7 +5,7 @@ const certKey = ctx.self.cert.key;
 
 // 根据接口文档构造请求体
 const requestBody = {
-  "id":0,
+  "id":1,
   "type":2,
   "acme":{
     "domains":["*.yl0618.tech"],
