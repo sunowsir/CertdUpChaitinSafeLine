@@ -1,0 +1,42 @@
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
+const certPem = ctx.self.cert.crt;
+const certKey = ctx.self.cert.key;
+
+// 根据接口文档构造请求体
+const requestBody = {
+  "id":0,
+  "type":2,
+  "acme":{
+    "domains":["*.yl0618.tech"],
+    "email":""
+  },
+  "manual":{
+    "crt": certPem,
+    "key": certKey
+  }
+};
+
+
+ctx.logger.info("请求体:", JSON.stringify(requestBody));
+
+const res = await ctx.http.request({
+  baseURL: "https://10.0.0.1:9443",  // 指定基础 URL
+  // 使用相对 URL 尝试让平台自动处理参数传递
+  url: "/api/open/cert",
+  method: "post",
+  headers: {
+    "Content-Type": "application/json",
+    "X-SLCE-API-TOKEN": "ckhznhergE98UG5IR3fblLCS8VdGbdlX"
+  },
+
+  data: requestBody,
+  rejectUnauthorized: false  // 跳过 SSL 验证，仅限测试环境
+});
+
+if (!res || typeof(res.code) !== 'undefined' ) {
+  throw new Error("上传失败", res.code);
+}
+
+ctx.logger.info("res.data: ", res.data);
+ctx.logger.info("res.code: ", res.code);
